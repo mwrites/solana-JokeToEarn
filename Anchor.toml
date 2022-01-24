@@ -1,11 +1,11 @@
-[programs.localnet]
-joketoearn = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+joketoearn = "HZy4kyk53Zsrzgv84fuRmuXFNar9VAyJmqwVZtK1iEVy"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/matanwrites/.config/solana/id.json"
 
 [scripts]
