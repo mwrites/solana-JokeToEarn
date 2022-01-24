@@ -7,7 +7,7 @@ pub mod joketoearn {
     use super::*;
 
     pub fn create_joke(_ctx: Context<CreateJokeCtx>, joke_content: String) -> ProgramResult {
-        let joke: &mut Account<Joke> = &mut _ctx.accounts.jokeAccount;
+        let joke: &mut Account<Joke> = &mut _ctx.accounts.joke_account;
         joke.author = *_ctx.accounts.authority.key;
         joke.content = joke_content;
         Ok(())
@@ -17,7 +17,7 @@ pub mod joketoearn {
 #[derive(Accounts)]
 pub struct CreateJokeCtx<'info> {
     #[account(init, payer = authority, space = 2000)]
-    pub jokeAccount: Account<'info, Joke>,
+    pub joke_account: Account<'info, Joke>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
