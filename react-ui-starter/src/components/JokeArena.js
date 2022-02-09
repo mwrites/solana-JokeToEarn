@@ -21,7 +21,7 @@ const JokeArena = ({ network }) => {
 
     const getAllJokes = async () => {
         const jokes = await fetchJokes(wallet, network);
-        setJokes(jokes.flatMap(joke => joke.account).slice(0, 2));
+        setJokes(jokes.flatMap(joke => joke.account).slice(0, 4));
     }
 
     useEffect(() => {
