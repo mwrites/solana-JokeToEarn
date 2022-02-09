@@ -1,5 +1,14 @@
 @import './reset.css';
 
+html,
+body {
+    height: 100vh;
+}
+
+#app {
+    min-height: 100vh;
+}
+
 body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
@@ -7,7 +16,6 @@ body {
 }
 
 #app {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,9 +29,10 @@ body {
     flex-direction: column;
     justify-content: center;
     /*align-items: center;*/
-    height: 100vh;
+    flex-grow: 1;
     text-align: center;
     max-width: 800px;
+    margin-bottom: 80px;
 }
 
 .intro-container {
