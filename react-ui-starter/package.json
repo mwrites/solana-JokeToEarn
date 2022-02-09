@@ -20,7 +20,7 @@
     ],
     "scripts": {
         "clean": "shx rm -rf dist .parcel-cache",
-        "build": "yarn clean && parcel build src/index.html",
+        "build": "yarn clean && yarn parcel build src/index.html",
         "start": "yarn clean && yarn parcel src/index.html",
         "fmt": "prettier --write '{*,**/*}.{js,ts,jsx,tsx,json}'",
         "lint": "eslint . && prettier --check '{*,**/*}.{js,ts,jsx,tsx,json}'",
