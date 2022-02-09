@@ -3,7 +3,7 @@ import { Program, Provider, web3 } from '@project-serum/anchor';
 import { programAddress, connectionsOptions } from './config';
 
 
-const getConnectionProvider = async (wallet, network) => {
+const getConnectionProvider = (wallet, network) => {
     const connection = new Connection(
         network,
         connectionsOptions.preflightCommitment
