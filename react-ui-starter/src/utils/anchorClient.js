@@ -18,7 +18,7 @@ const getConnectionProvider = (wallet, network) => {
 
 const getProgram = async (wallet, network) => {
     // Get a connection
-    const provider = await getConnectionProvider(wallet, network);
+    const provider = getConnectionProvider(wallet, network);
     // Get metadata about your solana program
     const idl = await Program.fetchIdl(programAddress, provider);
     // Create a program that you can call
