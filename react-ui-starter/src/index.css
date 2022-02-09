@@ -1,0 +1,128 @@
+@import './reset.css';
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    font-family: "Formular Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;;
+}
+
+.jokearena-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*align-items: center;*/
+    height: 100vh;
+    text-align: center;
+    max-width: 800px;
+}
+
+.intro-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header {
+    text-align: center;
+    font-size: 3em;
+    font-weight: 600;
+    color: white;
+}
+
+.intro {
+    text-align: center;
+    color: gray;
+    margin-top: 16px;
+}
+
+.help {
+    text-align: center;
+    color: gray;
+    margin-top: 80px;
+    font-size: 1em;
+}
+
+.wallet-adapter-dropdown > .btn-wallet {
+    min-width: 100%;
+}
+
+
+.btn-wallet {
+    margin-top: 32px;
+    /*max-width: 1400px;*/
+    /*    display: inline-block;;*/
+    /*    text-align: center;*/
+    /*    cursor: pointer;*/
+    /*    align-self: center;*/
+    /*    margin-top: 16px;*/
+    /*    padding: 8px;*/
+    background-image: linear-gradient(to right,#76E650 0%, #F9D649 16.15%, #F08E35 32.81%, #EC5157 49.48%, #FF18BD 68.23%, #1A4BFF 85.42%, #62D8F9 100%);
+}
+
+.txt-white {
+    color: #fff;
+}
+
+.txt-muted {
+    color: gray;
+}
+
+.card {
+    margin-top: 40px;
+    padding: 12px 12px 32px 14px;
+
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    color: #fff;
+
+    text-align: left;
+}
+
+.joke-author {
+    font-size: 1em;
+}
+
+.joke-content {
+    font-size: 1em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 36px;
+    /*grid-template: 1fr / 1fr;*/
+    /*gap: 17px;*/
+
+}
+
+.form-input {
+    color: #fff;
+    background-color: black;
+    text-align: center;
+    border: 1px solid yellowgreen;
+}
+
+.form-input:focus {
+    outline: none !important;
+    border:1px solid yellowgreen;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+.form-button {
+    /*grid-column: 1 / -1;*/
+    margin-top: 4px;
+    background-image: linear-gradient(to right, #76E650 0%, #F9D649 16.15%, #F08E35 32.81%, #EC5157 49.48%, #FF18BD 68.23%);
+    /*background-color: coral;*/
+    border-radius: 6px;
+    border: 0;
+}
