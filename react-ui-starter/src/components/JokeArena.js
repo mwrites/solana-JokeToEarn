@@ -1,38 +1,61 @@
 // React Stuff
 import React, { useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
+import {
+    // uncomment for anchor version
+    // useAnchorWallet,
+    useConnection,
+    useWallet
+} from "@solana/wallet-adapter-react";
 
 
 // My Deps
 import Intro from './Intro';
 import JokeEditor from './JokeEditor';
-import { fetchJokes, sendJoke } from "../utils/anchorClient"
+import { fetchJokes, sendJoke } from "../utils/client"
+// uncomment for anchor version
+// import { anchor_fetchJokes, anchor_sendJoke } from "../utils/anchorClient";
 
 
 
-const JokeArena = ({ network }) => {
-    const wallet = useWallet();
+const JokeArena = ({ }) => {
+    const { connection } = useConnection();
+    const { wallet, publicKey, connected, sendTransaction } = useWallet();
+    // uncomment for anchor version
+    // const anchorWallet = useAnchorWallet();
     const [jokes, setJokes] = useState([]);
 
     const submitJoke = async (joke) => {
-        await sendJoke(wallet, network, joke);
+        // uncomment to use anchor libs
+        // await anchor_sendJoke({anchorWallet,
+        //     walletPubkey: publicKey,
+        //     connection,
+        //     sendTransaction,
+        //     joke
+        // });
+        await sendJoke({
+            walletPublicKey: publicKey,
+            connection,
+            sendTransaction,
+            joke
+        })
         await getAllJokes()
     }
 
     const getAllJokes = async () => {
-        const jokes = await fetchJokes(wallet, network);
-        setJokes(jokes.flatMap(joke => joke.account));
+        if (!connection) return;
+        const jokes = await fetchJokes({wallet: wallet, connection});
+        setJokes(jokes);
     }
 
     useEffect(() => {
         getAllJokes();
-    }, [network, wallet]);
+    }, [publicKey, connection]);
 
     return (
         <div className="jokearena-container">
-            <Intro wallet={wallet}/>
+            <Intro />
 
-            { wallet.connected &&
+            { connected &&
                 jokes.map((item, idx) => (
                     <div key={idx} className={"card"}>
                         <div className={"card-body"}>
@@ -48,7 +71,7 @@ const JokeArena = ({ network }) => {
                     </div>
                 ))
             }
-            <JokeEditor wallet={wallet} submitJoke={submitJoke} />
+            <JokeEditor submitJoke={submitJoke} />
         </div>
     )
 }

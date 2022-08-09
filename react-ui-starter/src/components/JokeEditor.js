@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
 
-const JokeEditor = ({ wallet, submitJoke }) => {
+const JokeEditor = ({ submitJoke }) => {
+    const { connected } = useWallet();
     const [joke, setJoke] = useState("")
 
-    if (!wallet.connected) {
+    if (!connected) {
         return null;
     }
 

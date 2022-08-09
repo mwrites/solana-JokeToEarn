@@ -7,3 +7,15 @@
 ### Walkthrough
 - [Frontend Walkthrough](https://blog.matanwrites.com/solana-dapp-frontend)
 - [Solana Program Walkthrough](https://mwrites.hashnode.dev/your-first-solana-program)
+
+
+
+# Branch `native-front-to-anchor-program`
+- [x] Clean deps and upgraded anchor
+- [x] Fixed joke account length
+- [x] Added creation date
+- [x] Sort jokes by creation date 
+- [x] Added both anchor and non anchor clients
+
+⚠️Branch `native-front-to-anchor-program` is not compatible with the deployed version, I might do a migration or
+deploy the program with a different address.
