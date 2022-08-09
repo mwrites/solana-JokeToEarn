@@ -10,3 +10,8 @@ wallet = "/Users/matanwrites/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+idl-init = "anchor idl init -f target/idl/joketoearn.json $(solana address -k target/deploy/joketoearn-keypair.json) --provider.cluster localnet"
+idl-upgrade = "anchor idl upgrade -f target/idl/joketoearn.json $(solana address -k target/deploy/joketoearn-keypair.json) --provider.cluster localnet"
+dev-init = "anchor build && anchor deploy --provider.cluster localnet && anchor run idl-init"
+dev = "anchor build && anchor deploy --provider.cluster localnet && anchor run idl-upgrade"
+airdrop = "solana airdrop 2 4Gyjeq6BXhGnZYZA4vNcUgb24iXT6gqAYfgNC98oAw9H"
