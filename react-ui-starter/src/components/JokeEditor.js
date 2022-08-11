@@ -15,12 +15,14 @@ const JokeEditor = ({ submitJoke }) => {
     }
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         submitJoke(joke)
     }
 
+
     return (
         <div className="joke-edit-container">
-            <form className="form">
+            <form className="form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Come on, don't be shy..."
