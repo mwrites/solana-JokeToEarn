@@ -19,3 +19,12 @@
 
 ⚠️Branch `native-front-to-anchor-program` is not compatible with the deployed version, I might do a migration or
 deploy the program with a different address.
+
+
+# UX
+- [ ] Display V2 or V3 or give a selector
+- [ ] We should follow network of the wallet, when switch network?
+- [ ] You are not on devnet
+- [ ] Switch to mainnet
+- [ ] Airdrop sol (devnet/testnet)
+- [ ] Create KP?

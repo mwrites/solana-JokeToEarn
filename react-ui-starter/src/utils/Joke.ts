@@ -5,51 +5,128 @@ import { sha256 } from "js-sha256";
 import BN from "bn.js";
 
 
-const JOKE_ACCOUNT_SCHEMA = borsh.struct([
-  borsh.publicKey("author"),
-  borsh.i64("created_at"),
-  borsh.str("content"),
-]);
-
-
 class Joke {
-  constructor(public author: PublicKey, public created_at: BN, public content: String) { }
-
-  static initFromDeserialization(buffer: Buffer, isAnchor=true): Joke {
-    const data = isAnchor ? buffer.slice(8) : buffer;
-
-    const { author, content, created_at } = JOKE_ACCOUNT_SCHEMA.decode(data);
-    return new Joke(author, created_at, content);
+  // Size infos
+  get discriminator_size() {
+    return 8;
   }
 
-  // Size infos
-  static discriminator_size = 8;
-  static author_size = 32;
-  static created_at_size = 8;
-  static content_size = 80; // 4 for len + 80 characters max
+  get author_size() {
+    return 32;
+  }
+
+  get created_at_size() {
+    return 8;
+  }
+
+  get content_size() {
+    return 84;
+  } // 4 for len + 80 characters max
 
   // Offsets
-  static author_offset = 0 + Joke.discriminator_size
-  static created_at_offset = Joke.author_offset + Joke.author_size
-  static content_offset = Joke.created_at_offset + Joke.created_at_size
-
-
-  static discriminator = Buffer.from(sha256.digest('account:Joke')).slice(0, 8);
-
-  static created_at_filter = {
-    dataSlice: { offset: Joke.created_at_offset, length: Joke.created_at_size},
-    filters: [
-      { memcmp: { offset: 0, bytes: bs58.encode(Joke.discriminator) } },
-    ],
+  get author_offset() {
+    return 0 + this.discriminator_size;
   }
 
-  get date () {
-    const bignum = new BN(this.created_at, 'le');
-    const num = bignum.toNumber();
-    const date = new Date(num * 1000);
-    return date.toLocaleDateString()
+  get created_at_offset() {
+    return this.author_offset + this.author_size;
+  }
+
+  get content_offset() {
+    return this.created_at_offset + this.created_at_size;
+  }
+
+
+  get version() {
+    return "";
+  }
+
+  get discriminator() {
+    return Buffer.from(sha256.digest("account:Joke" + this.version)).slice(0, 8);
+  }
+
+  get created_at_filter() {
+    return {
+      dataSlice: { offset: this.created_at_offset, length: this.created_at_size },
+      filters: [
+        { memcmp: { offset: 0, bytes: bs58.encode(this.discriminator) } }
+      ]
+    };
   }
 }
 
 
-export default Joke;
+class JokeV2 extends Joke {
+  get version() {
+    return 'V2';
+  }
+
+  public author: PublicKey;
+  public created_at: BN;
+  public content: String;
+
+  initFromDeserialization = ({ buffer, isAnchor = true }) => {
+    const data = isAnchor ? buffer.slice(8) : buffer;
+
+    const schema = borsh.struct([
+      borsh.publicKey("author"),
+      borsh.i64("created_at"),
+      borsh.str("content")
+    ]);
+
+    const { author, created_at, content } = schema.decode(data);
+    this.author = author;
+    this.created_at = created_at;
+    this.content = content;
+  };
+
+  get date() {
+    const bignum = new BN(this.created_at, "le");
+    const num = bignum.toNumber();
+    const date = new Date(num * 1000);
+    return date.toLocaleDateString();
+  }
+}
+
+
+class JokeV3 extends Joke {
+  get version() {
+    return 'V3';
+  }
+
+  public author: PublicKey;
+  public created_at: BN;
+  public votes: number;
+  public content: String;
+
+
+  initFromDeserialization = ({ buffer, isAnchor = true }) => {
+    const data = isAnchor ? buffer.slice(8) : buffer;
+
+    const schema = borsh.struct([
+      borsh.publicKey("author"),
+      borsh.i64("created_at"),
+      borsh.u32("votes"),
+      borsh.str("content")
+    ]);
+
+    const { author, created_at, votes, content } = schema.decode(data);
+    this.author = author;
+    this.created_at = created_at;
+    this.votes = votes;
+    this.content = content;
+  };
+
+  get date() {
+    const bignum = new BN(this.created_at, "le");
+    const num = bignum.toNumber();
+    const date = new Date(num * 1000);
+    return date.toLocaleDateString();
+  }
+}
+
+
+export {
+  JokeV2,
+  JokeV3
+};
