@@ -1,7 +1,7 @@
 import { Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
 import { Program, Provider } from "@project-serum/anchor";
-import { programAddress, connectionsOptions } from "../../config";
-import { JokeV2 } from "../../Joke";
+import { programAddress, connectionsOptions } from "../../../utils/config";
+import { JokeV2 } from "../../../models/Joke";
 import * as BN from "bn.js";
 import { Buffer } from "buffer";
 

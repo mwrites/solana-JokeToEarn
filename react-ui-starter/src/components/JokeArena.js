@@ -11,7 +11,7 @@ import {
 // My Deps
 import Intro from "./Intro";
 import JokeEditor from "./JokeEditor";
-import { fetchJokes, sendJoke } from "../utils/JokeClient";
+import { fetchJokes, sendJoke } from "../clients/JokeClient";
 
 
 // switch this to v2 or v3 to use different api of the program

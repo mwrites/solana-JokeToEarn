@@ -3,7 +3,7 @@ import { sendJokeV3 } from "./native/v3/writeAccountsV3";
 import { anchor_fetchJokesV2, anchor_sendJokeV2 } from "./anchor/v2/anchorClientV2";
 import { anchor_fetchJokesV3, anchor_sendJokeV3 } from "./anchor/v3/anchorClientV3";
 import { getProgramAccountsWrapper } from "./native/getProgramAccountsWrapper";
-import { JokeV2, JokeV3 } from "./Joke";
+import { JokeV2, JokeV3 } from "../models/Joke";
 
 
 const fetchJokes = async ({

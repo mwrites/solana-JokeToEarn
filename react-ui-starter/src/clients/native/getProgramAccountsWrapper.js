@@ -1,4 +1,4 @@
-import { programAddress } from "../config";
+import { programAddress } from "../../utils/config";
 import * as BN from "bn.js";
 
 

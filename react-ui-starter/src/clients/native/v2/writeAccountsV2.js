@@ -1,5 +1,5 @@
 import { Keypair, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
-import { programAddress } from "../../config";
+import { programAddress } from "../../../utils/config";
 import { createJokeInstruxBuffer } from "../instructionBuffer";
 
 
