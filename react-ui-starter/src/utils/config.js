@@ -9,3 +9,7 @@ export const programAddress = new PublicKey(
 );
 
 export const defaultCluster = "http://127.0.0.1:8899";
+
+
+export const defaultApiVersion = "v2";
+export const defaultUseAnchor = false;

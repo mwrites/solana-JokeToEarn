@@ -56,9 +56,9 @@ class Joke {
 }
 
 
-class JokeV2 extends Joke {
+class JokeV1 extends Joke {
   get version() {
-    return 'V2';
+    return 'V1';
   }
 
   public author: PublicKey;
@@ -89,9 +89,9 @@ class JokeV2 extends Joke {
 }
 
 
-class JokeV3 extends Joke {
+class JokeV2 extends Joke {
   get version() {
-    return 'V3';
+    return 'V2';
   }
 
   public author: PublicKey;
@@ -127,6 +127,6 @@ class JokeV3 extends Joke {
 
 
 export {
-  JokeV2,
-  JokeV3
+  JokeV1,
+  JokeV2
 };

@@ -6,11 +6,27 @@ declare_id!("HZy4kyk53Zsrzgv84fuRmuXFNar9VAyJmqwVZtK1iEVy");
 pub mod joketoearn {
     use super::*;
 
-    //region V2
-    pub fn create_joke_v2(ctx: Context<CreateJokeCtxV2>, joke_content: String) -> Result<()> {
-        let joke: &mut Account<JokeV2> = &mut ctx.accounts.joke_account;
-        joke.author = *ctx.accounts.payer.key;
+    //region v1
+    pub fn create_joke_v1(ctx: Context<CreateJokeCtxV1>, joke_content: String) -> Result<()> {
+        let joke: &mut Account<JokeV1> = &mut ctx.accounts.joke_account;
+        joke.author = *ctx.accounts.author.key;
         joke.created_at = Clock::get().unwrap().unix_timestamp;
+
+        if joke_content.chars().count() > JokeV1::LENGTH_CONTENT {
+            return Err(error!(JokeToEarnError::JokeContentMaxCharacters));
+        }
+        joke.content = joke_content;
+
+        Ok(())
+    }
+    //endregion
+
+    //region v2
+    pub fn create_joke_v2(ctx: Context<CreateJokeCtxV2>, joke_content: String) -> Result<()> {
+        let joke: &mut Account<JokeV2> = &mut ctx.accounts.joke_pda;
+        joke.author = *ctx.accounts.author.key;
+        joke.created_at = Clock::get().unwrap().unix_timestamp;
+        joke.votes = 0;
 
         if joke_content.chars().count() > JokeV2::LENGTH_CONTENT {
             return Err(error!(JokeToEarnError::JokeContentMaxCharacters));
@@ -20,46 +36,30 @@ pub mod joketoearn {
         Ok(())
     }
     //endregion
-
-    //region V3
-    pub fn create_joke_v3(ctx: Context<CreateJokeCtxV3>, joke_content: String) -> Result<()> {
-        let joke: &mut Account<JokeV3> = &mut ctx.accounts.joke_pda;
-        joke.author = *ctx.accounts.payer.key;
-        joke.created_at = Clock::get().unwrap().unix_timestamp;
-        joke.votes = 0;
-
-        if joke_content.chars().count() > JokeV3::LENGTH_CONTENT {
-            return Err(error!(JokeToEarnError::JokeContentMaxCharacters));
-        }
-        joke.content = joke_content;
-
-        Ok(())
-    }
-    //endregion
 }
 
 
-//region V2
+//region v1
 #[derive(Accounts)]
-pub struct CreateJokeCtxV2<'info> {
-    #[account(init, payer = payer, space = JokeV2::SPACE)]
-    pub joke_account: Account<'info, JokeV2>,
+pub struct CreateJokeCtxV1<'info> {
+    #[account(init, payer = author, space = JokeV1::SPACE)]
+    pub joke_account: Account<'info, JokeV1>,
 
     #[account(mut)]
-    pub payer: Signer<'info>,
+    pub author: Signer<'info>,
 
     pub system_program: Program<'info, System>,
 }
 
 
 #[account]
-pub struct JokeV2 {
+pub struct JokeV1 {
     pub author: Pubkey,
     pub created_at: i64,
     pub content: String,
 }
 
-impl JokeV2 {
+impl JokeV1 {
     const SPACE_DISCRIMINATOR: usize = 8;
     const SPACE_AUTHOR: usize = 32;
     const SPACE_CREATED_AT: usize = 8;
@@ -67,37 +67,37 @@ impl JokeV2 {
     const LENGTH_CONTENT: usize = 80;
     const SPACE_CONTENT: usize = 84;
 
-    const SPACE: usize = JokeV2::SPACE_DISCRIMINATOR
-        + JokeV2::SPACE_AUTHOR
-        + JokeV2::SPACE_CREATED_AT
-        + JokeV2::SPACE_CONTENT;
+    const SPACE: usize = JokeV1::SPACE_DISCRIMINATOR
+        + JokeV1::SPACE_AUTHOR
+        + JokeV1::SPACE_CREATED_AT
+        + JokeV1::SPACE_CONTENT;
 }
 //endregion
 
 
-//region V3
+//region v2
 #[derive(Accounts)]
-pub struct CreateJokeCtxV3<'info> {
+pub struct CreateJokeCtxV2<'info> {
     /// CHECK: just used as a uuid
     pub joke_id: AccountInfo<'info>,
 
-    #[account(mut)]
-    pub payer: Signer<'info>,
-
     #[account(
     init,
-    payer = payer,
-    space = JokeV3::SPACE,
-    seeds = [b"joke", payer.key().as_ref(), joke_id.key().as_ref()],
+    payer = author,
+    space = JokeV2::SPACE,
+    seeds = [b"joke", author.key().as_ref(), joke_id.key().as_ref()],
     bump // canonical bump
     )]
-    pub joke_pda: Account<'info, JokeV3>,
+    pub joke_pda: Account<'info, JokeV2>,
+
+    #[account(mut)]
+    pub author: Signer<'info>,
 
     pub system_program: Program<'info, System>,
 }
 
 #[account]
-pub struct JokeV3 {
+pub struct JokeV2 {
     pub author: Pubkey,
     pub created_at: i64,
     pub votes: u32,
@@ -105,7 +105,7 @@ pub struct JokeV3 {
 }
 
 
-impl JokeV3 {
+impl JokeV2 {
     const SPACE_DISCRIMINATOR: usize = 8;
     const SPACE_AUTHOR: usize = 32;
     const SPACE_CREATED_AT: usize = 8;
@@ -114,11 +114,11 @@ impl JokeV3 {
     const LENGTH_CONTENT: usize = 80;
     const SPACE_CONTENT: usize = 84;
 
-    const SPACE: usize = JokeV3::SPACE_DISCRIMINATOR
-        + JokeV3::SPACE_AUTHOR
-        + JokeV3::SPACE_CREATED_AT
-        + JokeV3::SPACE_VOTES
-        + JokeV3::SPACE_CONTENT;
+    const SPACE: usize = JokeV2::SPACE_DISCRIMINATOR
+        + JokeV2::SPACE_AUTHOR
+        + JokeV2::SPACE_CREATED_AT
+        + JokeV2::SPACE_VOTES
+        + JokeV2::SPACE_CONTENT;
 }
 
 

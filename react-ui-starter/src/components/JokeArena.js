@@ -12,12 +12,10 @@ import {
 import Intro from "./Intro";
 import JokeEditor from "./JokeEditor";
 import { fetchJokes, sendJoke } from "../clients/JokeClient";
+import { defaultApiVersion, defaultUseAnchor } from "../utils/config";
 
-
-// switch this to v2 or v3 to use different api of the program
-const programApiVersion = "v2";
-// toggle this to use anchor typescript libs
-const useAnchor = false;
+const programApiVersion = defaultApiVersion;
+const useAnchor = defaultUseAnchor;
 
 
 const JokeArena = ({}) => {

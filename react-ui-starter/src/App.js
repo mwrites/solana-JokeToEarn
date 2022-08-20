@@ -19,6 +19,7 @@ import '@solana/wallet-adapter-react-ui/styles.css'
 // Solana Stuff
 import JokeArena from './components/JokeArena';
 import { defaultCluster } from './utils/config';
+import { ClientSelector } from "./components/ClientSelector";
 
 
 
@@ -44,6 +45,7 @@ const App = () => {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
+                  <ClientSelector />
                     <JokeArena />
                 </WalletModalProvider>
             </WalletProvider>

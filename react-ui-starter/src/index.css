@@ -3,6 +3,7 @@
 html,
 body {
     height: 100vh;
+    color: #fff;
 }
 
 #app {
@@ -19,12 +20,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
     background-color: #000;
     font-family: "Formular Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;;
 }
 
 .jokearena-container {
+    align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +34,7 @@ body {
     flex-grow: 1;
     text-align: center;
     max-width: 800px;
-    margin-top: 60px;
+    margin-top: 20px;
     margin-bottom: 80px;
 }
 
@@ -46,7 +48,6 @@ body {
     text-align: center;
     font-size: 3em;
     font-weight: 600;
-    color: white;
 }
 
 .intro {
@@ -93,7 +94,6 @@ body {
 
     border: 1px solid #D1D5DB;
     border-radius: 6px;
-    color: #fff;
 
     text-align: left;
 }
@@ -135,4 +135,29 @@ body {
     /*background-color: coral;*/
     border-radius: 6px;
     border: 0;
+}
+
+.client-selector {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.client-selector-container {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+}
+
+.client-selector-btn {
+    width: 400px;
+    margin-top: 10px;
+    /*margin: 10px;*/
+    padding: 10px;
+    border-radius: 15px;
+    background: limegreen;
+}
+.client-selector-btn:hover {
+    margin: 11px;
+    padding: 10px;
+    border-radius: 15px;
+    background: rgb(109, 175, 11);
 }

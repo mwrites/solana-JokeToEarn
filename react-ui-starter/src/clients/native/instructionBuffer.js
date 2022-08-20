@@ -10,7 +10,7 @@ import { sha256 } from "js-sha256";
 import * as BN from "bn.js";
 
 
-const createJokeInstruxBuffer = (joke, version='v3') => {
+const createJokeInstruxBuffer = (joke, version) => {
   const anchorName = 'global' + ':' + 'create_joke' + '_' + version.toLowerCase();
   const ixSigHash = Buffer.from(sha256.digest(anchorName)).slice(0, 8);
 

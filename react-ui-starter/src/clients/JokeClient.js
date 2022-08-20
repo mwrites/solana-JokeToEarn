@@ -1,9 +1,9 @@
+import { sendJokeV1 } from "./native/v1/writeAccountsV1";
 import { sendJokeV2 } from "./native/v2/writeAccountsV2";
-import { sendJokeV3 } from "./native/v3/writeAccountsV3";
+import { anchor_fetchJokesV1, anchor_sendJokeV1 } from "./anchor/v1/anchorClientV1";
 import { anchor_fetchJokesV2, anchor_sendJokeV2 } from "./anchor/v2/anchorClientV2";
-import { anchor_fetchJokesV3, anchor_sendJokeV3 } from "./anchor/v3/anchorClientV3";
 import { getProgramAccountsWrapper } from "./native/getProgramAccountsWrapper";
-import { JokeV2, JokeV3 } from "../models/Joke";
+import { JokeV1, JokeV2 } from "../models/Joke";
 
 
 const fetchJokes = async ({
@@ -13,10 +13,10 @@ const fetchJokes = async ({
                             anchorWallet
                           }) => {
   if (useAnchor) {
-    const jokeModelVersions = { "v2": anchor_fetchJokesV2, "v3": anchor_fetchJokesV3 };
+    const jokeModelVersions = { "v1": anchor_fetchJokesV1, "v2": anchor_fetchJokesV2 };
     return await jokeModelVersions[programApiVersion]({ anchorWallet, connection });
   } else {
-    const jokeModelVersions = { "v2": JokeV2, "v3": JokeV3 };
+    const jokeModelVersions = { "v1": JokeV1, "v2": JokeV2 };
     return await getProgramAccountsWrapper({
       connection,
       jokeModel: jokeModelVersions[programApiVersion]
@@ -36,14 +36,14 @@ const sendJoke = async ({
                         }) => {
 
   if (useAnchor) {
-    const jokeModelVersions = { "v2": anchor_sendJokeV2, "v3": anchor_sendJokeV3 };
+    const jokeModelVersions = { "v1": anchor_sendJokeV1, "v2": anchor_sendJokeV2 };
     await jokeModelVersions[programApiVersion]({ anchorWallet, connection, joke });
   } else {
-    const jokeModelVersions = { "v2": sendJokeV2, "v3": sendJokeV3 };
+    const jokeModelVersions = { "v1": sendJokeV1, "v2": sendJokeV2 };
     await jokeModelVersions[programApiVersion]({
       connection,
       sendTransaction,
-      walletPublicKey,
+      authorPubkey: walletPublicKey,
       joke
     });
   }
