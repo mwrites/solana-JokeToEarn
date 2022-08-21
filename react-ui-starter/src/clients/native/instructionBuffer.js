@@ -19,8 +19,16 @@ const createJokeInstruxBuffer = (joke, version) => {
   return Buffer.concat([ixSigHash, string_u8vec_length, string_u8vec]);
 };
 
+const upvoteJokeInstruxBuffer = (version) => {
+  const anchorName = 'global' + ':' + 'upvote_joke' + '_' + version.toLowerCase();
+  const ixSigHash = Buffer.from(sha256.digest(anchorName)).slice(0, 8);
+
+  return Buffer.concat([ixSigHash]);
+};
+
 
 export {
-  createJokeInstruxBuffer
+  createJokeInstruxBuffer,
+  upvoteJokeInstruxBuffer
 };
 //endregion

@@ -38,7 +38,8 @@
         "bs58": "^5.0.0",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
-        "react-switch": "^7.0.0"
+        "react-switch": "^7.0.0",
+        "zustand": "^4.1.0"
     },
     "devDependencies": {
         "@types/eslint": "^8.2.2",

@@ -77,8 +77,13 @@ const anchor_createJokeInstruction_OneShotKey_version = async ({ program, anchor
   await program.provider.connection.confirmTransaction(tx, "confirmed");
 };
 
+const anchor_upvoteJokeV1 = async ({ jokePublicKey, connection, sendTransaction }) => {
+  alert("Voting doesn't work in v1! (broken on purpose lol) Please check v2")
+};
+
 
 export {
   anchor_fetchJokesV1,
-  anchor_sendJokeV1
+  anchor_sendJokeV1,
+  anchor_upvoteJokeV1
 };

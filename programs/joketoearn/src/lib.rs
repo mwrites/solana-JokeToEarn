@@ -35,6 +35,18 @@ pub mod joketoearn {
 
         Ok(())
     }
+
+    pub fn upvote_joke_v2(ctx: Context<UpVoteJokeCtx>) -> Result<()> {
+        let joke: &mut Account<JokeV2> = &mut ctx.accounts.joke_pda;
+        let address = joke.key();
+
+        msg!(format!("pda: {}", address.to_string()).as_ref());
+        msg!(format!("votes before: {}", joke.votes.to_string()).as_ref());
+        joke.votes += 1;
+        msg!(format!("votes after: {}", joke.votes.to_string()).as_ref());
+
+        Ok(())
+    }
     //endregion
 }
 
@@ -96,11 +108,22 @@ pub struct CreateJokeCtxV2<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct UpVoteJokeCtx<'info> {
+    #[account(mut)]
+    pub joke_pda: Account<'info, JokeV2>,
+
+    #[account(mut)]
+    pub voter: Signer<'info>,
+}
+
 #[account]
 pub struct JokeV2 {
     pub author: Pubkey,
     pub created_at: i64,
     pub votes: u32,
+    // pub id: Pubkey,
+    // pub bump: u8,
     pub content: String,
 }
 

@@ -40,8 +40,13 @@ const createJokeInstruction_OneShotKey_version = async ({ connection, sendTransa
   await connection.confirmTransaction(transactionSignature, "confirmed");
 };
 
+const upvoteJokeV1 = async ({ jokePublicKey, connection, sendTransaction }) => {
+  alert("Voting doesn't work in v1! (broken on purpose lol) Please check v2")
+};
+
 
 export {
-  sendJokeV1
+  sendJokeV1,
+  upvoteJokeV1
 };
 

@@ -1,60 +1,61 @@
 import React, { useState } from "react";
 import { defaultApiVersion, defaultUseAnchor } from "../utils/config";
 import Switch from "react-switch"
+import useApiStore from "../stores/useApiStore";
 
 
 const ClientSelector = () => {
-  const [apiVersion, setApiVersion] = useState(defaultApiVersion);
-  const [checked, setChecked] = useState(false);
+  const { useVersion, setUseVersion, useAnchor, setUseAnchor } = useApiStore();
+  // const [checked, setChecked] = useState(false);
 
 
   const handleChange = (checked) => {
-    setChecked(checked)
+    setUseAnchor(checked)
   }
 
   return (
     <div className="client-selector">
       <h3>Choose Your Client</h3>
-      Use Anchor? <Switch onChange={handleChange} checked={checked} />
+      Use Anchor? <Switch onChange={handleChange} checked={useAnchor} />
       <div className="client-selector-container">
         <div className="client-selector-btn"
              onClick={() => {
-               setApiVersion("v1");
+               setUseVersion("v1");
              }}
         >
           <input
             type="radio"
-            value={apiVersion}
+            value={useVersion}
             name="version"
-            checked={apiVersion == "v1"}
+            checked={useVersion == "v1"}
           />
           v1: 1 joke = 1 ephemeral keypair
         </div>
         <div
           className="client-selector-btn"
           onClick={() => {
-            setApiVersion("v2");
+            setUseVersion("v2");
           }}
         >
           <input
             type="radio"
-            value={apiVersion}
+            value={useVersion}
             name="version"
-            checked={apiVersion == "v2"}
+            checked={useVersion == "v2"}
           />
           v2: Voting feature by usingPDA as AccountsMap
         </div>
         <div
           className="client-selector-btn"
           onClick={() => {
-            setApiVersion("v3");
+            setUseVersion("v3");
           }}
         >
           <input
             type="radio"
-            value={apiVersion}
+            value={useVersion}
             name="version"
-            checked={apiVersion == "v3"}
+            checked={useVersion == "v3"}
           />
           v3: Comments and metadata by using PDA as Parent / Child
         </div>

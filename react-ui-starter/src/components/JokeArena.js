@@ -11,14 +11,12 @@ import {
 // My Deps
 import Intro from "./Intro";
 import JokeEditor from "./JokeEditor";
-import { fetchJokes, sendJoke } from "../clients/JokeClient";
-import { defaultApiVersion, defaultUseAnchor } from "../utils/config";
-
-const programApiVersion = defaultApiVersion;
-const useAnchor = defaultUseAnchor;
+import { fetchJokes, sendJoke, upvoteJoke } from "../clients/JokeClient";
+import useApiStore from "../stores/useApiStore";
 
 
 const JokeArena = ({}) => {
+  const { useAnchor, useVersion } = useApiStore();
   const { connection } = useConnection();
   const { publicKey, connected, sendTransaction } = useWallet();
   const [jokes, setJokes] = useState([]);
@@ -27,12 +25,12 @@ const JokeArena = ({}) => {
 
   const submitJoke = async (joke) => {
     await sendJoke({
-      programApiVersion,
+      useVersion,
       useAnchor,
       connection,
       sendTransaction,
       anchorWallet,
-      walletPublicKey: publicKey,
+      userPublicKey: publicKey,
       joke
     });
     await getAllJokes();
@@ -41,13 +39,27 @@ const JokeArena = ({}) => {
   const getAllJokes = async () => {
     if (!connection) return;
     const jokes = await fetchJokes({
-      programApiVersion,
+      useVersion,
       useAnchor,
       anchorWallet,
       connection
     });
     setJokes(jokes);
   };
+
+  const onJokeClicked = async (event, key) => {
+    const joke = jokes[key];
+    await upvoteJoke({
+      useVersion,
+      useAnchor,
+      connection,
+      sendTransaction,
+      anchorWallet,
+      userPublicKey: publicKey,
+      jokeAddress: joke.pubkey
+    });
+    await getAllJokes();
+  }
 
   useEffect(() => {
     getAllJokes().catch(console.error);
@@ -60,15 +72,19 @@ const JokeArena = ({}) => {
 
       {connected &&
         jokes.map((item, idx) => (
-          <div key={idx} className={"card"}>
-            <div className={"card-body"}>
-              <div className={"joke-author"}>
+          <div key={idx} className={"card"} onClick={event => onJokeClicked(event, idx)}>
+            <div className="card-body">
+              <div className="joke-author">
                 <small className="txt-muted">
                   by @{item.author.toString()}
                 </small>
               </div>
-              <div className={"joke-content"}>
+              <div className="joke-content">
                 {item.content}
+              </div>
+              <hr />
+              <div className="joke-votes">
+                {item.votes} 👏
               </div>
             </div>
           </div>

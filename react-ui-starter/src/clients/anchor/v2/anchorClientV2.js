@@ -63,14 +63,6 @@ const anchor_sendJokeV2 = async ({ anchorWallet, connection, joke }) => {
 
 //  This works with v2 of the program where 1 joke = 1 pda with the 👇 seeds
 const anchor_createJokeInstruction_PDA_version = async ({ program, anchorWallet, joke }) => {
-  const jokePda = async (authorPubkey, jokeId) => {
-    const seeds = [Buffer.from("joke"), authorPubkey.toBuffer(), jokeId.toBuffer()];
-    return await PublicKey.findProgramAddress(
-      seeds,
-      programAddress
-    );
-  };
-
   // TODO: passing a keypair because dunno how to pass uid to anchor
   // 1. Create an identifier for the joke
   const jokeId = Keypair.generate().publicKey;
@@ -97,8 +89,25 @@ const anchor_createJokeInstruction_PDA_version = async ({ program, anchorWallet,
   await program.provider.connection.confirmTransaction(tx, "confirmed");
 };
 
+const anchor_upvoteJokeV2 = async ({ anchorWallet, connection, jokeAddress }) => {
+  const program = await getProgram(anchorWallet, connection);
+
+  const tx = await program.methods
+    .upvoteJokeV2()
+    .accounts({
+      jokePda: jokeAddress,
+      voter: anchorWallet.publicKey,
+      systemProgram: SystemProgram.programId
+    })
+    .rpc();
+
+  await program.provider.connection.confirmTransaction(tx, "confirmed");
+};
+
+
 
 export {
   anchor_fetchJokesV2,
-  anchor_sendJokeV2
+  anchor_sendJokeV2,
+  anchor_upvoteJokeV2
 };
