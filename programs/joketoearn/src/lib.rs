@@ -11,11 +11,27 @@ pub mod joketoearn {
         let joke: &mut Account<JokeV1> = &mut ctx.accounts.joke_account;
         joke.author = *ctx.accounts.author.key;
         joke.created_at = Clock::get().unwrap().unix_timestamp;
+        joke.votes = 0;
 
         if joke_content.chars().count() > JokeV1::LENGTH_CONTENT {
             return Err(error!(JokeToEarnError::JokeContentMaxCharacters));
         }
         joke.content = joke_content;
+
+        Ok(())
+    }
+
+    pub fn upvote_joke_v1(ctx: Context<UpVoteJokeCtxV1>) -> Result<()> {
+        let joke: &mut Account<JokeV1> = &mut ctx.accounts.joke_account;
+        let address = joke.key();
+
+        msg!(format!("address: {}", address.to_string()).as_ref());
+        msg!(format!("votes before: {}", joke.votes.to_string()).as_ref());
+        joke.votes += 1;
+        joke.content = "caca lol".parse().unwrap();
+        msg!(format!("votes after: {}", joke.votes.to_string()).as_ref());
+
+
 
         Ok(())
     }
@@ -36,7 +52,7 @@ pub mod joketoearn {
         Ok(())
     }
 
-    pub fn upvote_joke_v2(ctx: Context<UpVoteJokeCtx>) -> Result<()> {
+    pub fn upvote_joke_v2(ctx: Context<UpVoteJokeCtxV2>) -> Result<()> {
         let joke: &mut Account<JokeV2> = &mut ctx.accounts.joke_pda;
         let address = joke.key();
 
@@ -63,11 +79,21 @@ pub struct CreateJokeCtxV1<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct UpVoteJokeCtxV1<'info> {
+    #[account(mut)]
+    pub joke_account: Account<'info, JokeV1>,
+
+    #[account(mut)]
+    pub voter: Signer<'info>,
+}
+
 
 #[account]
 pub struct JokeV1 {
     pub author: Pubkey,
     pub created_at: i64,
+    pub votes: u32,
     pub content: String,
 }
 
@@ -75,6 +101,7 @@ impl JokeV1 {
     const SPACE_DISCRIMINATOR: usize = 8;
     const SPACE_AUTHOR: usize = 32;
     const SPACE_CREATED_AT: usize = 8;
+    const SPACE_VOTES: usize = 4;
     // Max of 80 characters but a borsh string is [len+vec] https://borsh.io/
     const LENGTH_CONTENT: usize = 80;
     const SPACE_CONTENT: usize = 84;
@@ -82,8 +109,10 @@ impl JokeV1 {
     const SPACE: usize = JokeV1::SPACE_DISCRIMINATOR
         + JokeV1::SPACE_AUTHOR
         + JokeV1::SPACE_CREATED_AT
+        + JokeV1::SPACE_VOTES
         + JokeV1::SPACE_CONTENT;
 }
+
 //endregion
 
 
@@ -109,7 +138,7 @@ pub struct CreateJokeCtxV2<'info> {
 }
 
 #[derive(Accounts)]
-pub struct UpVoteJokeCtx<'info> {
+pub struct UpVoteJokeCtxV2<'info> {
     #[account(mut)]
     pub joke_pda: Account<'info, JokeV2>,
 

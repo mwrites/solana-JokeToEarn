@@ -63,6 +63,7 @@ class JokeV1 extends Joke {
 
   public author: PublicKey;
   public created_at: BN;
+  public votes: number;
   public content: String;
 
   initFromDeserialization = ({ buffer, isAnchor = true }) => {
@@ -71,12 +72,14 @@ class JokeV1 extends Joke {
     const schema = borsh.struct([
       borsh.publicKey("author"),
       borsh.i64("created_at"),
+      borsh.u32("votes"),
       borsh.str("content")
     ]);
 
-    const { author, created_at, content } = schema.decode(data);
+    const { author, created_at, votes, content } = schema.decode(data);
     this.author = author;
     this.created_at = created_at;
+    this.votes = votes;
     this.content = content;
   };
 
