@@ -4,10 +4,8 @@ import Switch from "react-switch"
 import useApiStore from "../stores/useApiStore";
 
 
-const ClientSelector = () => {
+const ClientSelector = ({ onClientChange }) => {
   const { useVersion, setUseVersion, useAnchor, setUseAnchor } = useApiStore();
-  // const [checked, setChecked] = useState(false);
-
 
   const handleChange = (checked) => {
     setUseAnchor(checked)

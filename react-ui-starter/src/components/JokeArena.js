@@ -65,6 +65,11 @@ const JokeArena = ({}) => {
     getAllJokes().catch(console.error);
   }, [publicKey, connection]);
 
+  useEffect(() => {
+    console.log(useVersion, useAnchor);
+    getAllJokes().catch(console.error);
+  }, [useVersion, useAnchor])
+
 
   return (
     <div className="jokearena-container">

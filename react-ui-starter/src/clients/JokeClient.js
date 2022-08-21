@@ -64,7 +64,6 @@ const upvoteJoke = async ({
                             userPublicKey,
                             jokeAddress,
                           }) => {
-  console.log(jokeAddress.toString());
 
   if (useAnchor) {
     const jokeModelVersions = { "v1": anchor_upvoteJokeV1, "v2": anchor_upvoteJokeV2 };
